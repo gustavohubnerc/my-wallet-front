@@ -10,23 +10,22 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      setError("Por favor, preencha todos os campos.");
+      alert("Por favor, preencha todos os campos.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("As senhas não coincidem.");
+      alert("As senhas não coincidem.");
       return;
     }
 
     try {
-      const response = await axios.post(import.meta.env.VITE_API_URL, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL/cadastro}`, {
         name,
         email,
         password,
@@ -35,14 +34,14 @@ export default function SignUpPage() {
       if (response.status === 201) {
         navigate("/");
       } else if (response.status === 409) {
-        setError("Já existe um usuário com este e-mail cadastrado.");
+        alert("Já existe um usuário com este e-mail cadastrado.");
       } else if (response.status === 422) {
-        setError("Verifique os dados fornecidos e tente novamente.");
+        alert("Verifique os dados fornecidos e tente novamente.");
       } else {
-        setError("Ocorreu um erro ao cadastrar o usuário. Tente novamente mais tarde.");
+        alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente mais tarde.");
       }
     } catch (error) {
-      setError("Não foi possível cadastrar o usuário. Tente novamente mais tarde.");
+      alert("Não foi possível cadastrar o usuário. Tente novamente mais tarde.");
     }
   };
 
