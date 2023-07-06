@@ -25,7 +25,7 @@ export default function SignUpPage() {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL/cadastro}`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/cadastro`, {
         name,
         email,
         password,
