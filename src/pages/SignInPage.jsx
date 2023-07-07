@@ -27,13 +27,12 @@ export default function SignInPage() {
     }
 
     axios
-      .post(import.meta.env.VITE_API_URL, {
+      .post(`${import.meta.env.VITE_API_URL}/`, {
         email: email,
         password: password,
       })
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data.token);
           setToken(response.data.token);
           setName(response.data.name);
           navigate("/home");
