@@ -1,32 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import MyWalletLogo from "../components/MyWalletLogo";
 import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
 export default function SignInPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  const { setToken } = useContext(UserContext);
+  const { setName } = useContext(UserContext);
 
   const handleSignIn = (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please enter your email and password.");
+      alert("Por favor, preencha todos os campos.");
       return;
     }
 
     if (!/\S+@\S+\.\S+/.test(email)) {
-      alert("Please enter a valid email address.");
+      alert("Por favor, preencha um e-mail válido.");
       return;
     }
 
@@ -37,6 +33,9 @@ export default function SignInPage() {
       })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data.token);
+          setToken(response.data.token);
+          setName(response.data.name);
           navigate("/home");
         } else if (response.status === 404) {
           alert("E-mail não encontrado. Cadastre-se primeiro.");
@@ -60,7 +59,7 @@ export default function SignInPage() {
           placeholder="E-mail"
           type="email"
           value={email}
-          onChange={handleEmailChange}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           data-test="password"
@@ -68,7 +67,7 @@ export default function SignInPage() {
           type="password"
           autoComplete="new-password"
           value={password}
-          onChange={handlePasswordChange}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button data-test="sign-in-submit" type="submit">Entrar</button>
       </form>

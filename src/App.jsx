@@ -8,18 +8,26 @@ import UserContext from "./contexts/UserContext.jsx"
 import { useState } from "react"
 
 export default function App() {
-  const [username, setUsername] = useState("")
+  const [name, setName] = useState("");
+  const [token, setToken] = useState("");
 
   return (
     <PagesContainer>
       <BrowserRouter>
-        <UserContext.Provider value={{name: username}}>
-        <Routes>
-          <Route path="/" element={<SignInPage />} />
-          <Route path="/cadastro" element={<SignUpPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
-        </Routes>
+        <UserContext.Provider 
+          value={{
+            name: name,
+            setName: setName,
+            token: token,
+            setToken: setToken
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<SignInPage />} />
+            <Route path="/cadastro" element={<SignUpPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+          </Routes>
         </UserContext.Provider>
       </BrowserRouter>
     </PagesContainer>
