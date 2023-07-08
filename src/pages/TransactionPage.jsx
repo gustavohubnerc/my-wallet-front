@@ -12,7 +12,7 @@ export default function TransactionsPage() {
   const { token } = useContext(UserContext);
 
   const [transaction, setTransaction] = useState({
-    value: "",
+    value: parseFloat(0),
     description: "",
   })
 

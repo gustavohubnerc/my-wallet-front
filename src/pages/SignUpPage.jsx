@@ -33,15 +33,15 @@ export default function SignUpPage() {
 
       if (response.status === 201) {
         navigate("/");
-      } else if (response.status === 409) {
+      }
+    } catch (error) {
+      if (error.status === 409) {
         alert("Já existe um usuário com este e-mail cadastrado.");
-      } else if (response.status === 422) {
+      } else if (error.status === 422) {
         alert("Verifique os dados fornecidos e tente novamente.");
       } else {
         alert("Ocorreu um erro ao cadastrar o usuário. Tente novamente mais tarde.");
       }
-    } catch (error) {
-      alert("Não foi possível cadastrar o usuário. Tente novamente mais tarde.");
     }
   };
 

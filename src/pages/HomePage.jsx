@@ -13,7 +13,7 @@ export default function HomePage() {
 
   const { name } = useContext(UserContext);
   const { token } = useContext(UserContext);
-
+  
   useEffect(() => {
     const getTransactions = async () => {
       try {
@@ -35,30 +35,31 @@ export default function HomePage() {
 
   useEffect(() => {
     let total = 0;
-    userTransactions.forEach(transaction => {
+    userTransactions.forEach((transaction) => {
       if (transaction.tipo === "entrada") {
-        let entry = transaction.value;
-        total += entry;
+        total += transaction.value;
       } else {
-        let exit = transaction.value;
-        total -= exit;
+        total -= transaction.value;
       }
     });
     setBalance(total);
   }, [userTransactions]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("data");
+    navigate("/");
+  }
+
   return (
     <HomeContainer>
       <Header>
         <h1 data-test="user-name">Olá, {name}</h1>
-        <BiExit />
+        <BiExit data-test="logout" onClick={handleLogout}/>
       </Header>
 
       <TransactionsContainer>
         {userTransactions.length === 0 ? (
-          <NoRegister>
-            <span>Não há registros de entrada ou saída</span>
-          </NoRegister>
+            <p>Não há registros de entrada ou saída</p>
         ) : (
           <ul>
           {userTransactions.map((transaction) => (
@@ -68,7 +69,7 @@ export default function HomePage() {
                 <strong data-test="registry-name">{transaction.description}</strong>
               </div>
               <Value data-test="registry-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
-                {transaction.value.toFixed(2)}
+                {transaction.value}
               </Value>
             </ListItemContainer>  
           ))}  
@@ -77,8 +78,8 @@ export default function HomePage() {
         
         <article>
           <strong>Saldo</strong>
-          <Value data-test="total-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
-            {balance.toFixed(2)}
+          <Value data-test="total-amount" color={balance >= 0 ? "positivo" : "negativo"}>
+            {balance}
           </Value>
         </article>
       </TransactionsContainer>

@@ -16,6 +16,11 @@ export default function SignInPage() {
   const handleSignIn = (e) => {
     e.preventDefault();
 
+    const data = {
+      email: email,
+      password: password,
+    }
+
     if (!email || !password) {
       alert("Por favor, preencha todos os campos.");
       return;
@@ -27,14 +32,13 @@ export default function SignInPage() {
     }
 
     axios
-      .post(`${import.meta.env.VITE_API_URL}/`, {
-        email: email,
-        password: password,
-      })
+      .post(`${import.meta.env.VITE_API_URL}/`, data)
       .then((response) => {
         if (response.status === 200) {
+          localStorage.setItem("data", JSON.stringify(data));
           setToken(response.data.token);
           setName(response.data.name);
+          console.log(response);
           navigate("/home");
         } else if (response.status === 404) {
           alert("E-mail não encontrado. Cadastre-se primeiro.");
