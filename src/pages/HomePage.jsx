@@ -94,7 +94,6 @@ export default function HomePage() {
             <p>Nova <br />saída</p>
         </button>
       </ButtonsContainer>
-
     </HomeContainer>
   )
 }

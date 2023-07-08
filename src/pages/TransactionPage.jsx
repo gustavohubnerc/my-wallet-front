@@ -34,7 +34,7 @@ export default function TransactionsPage() {
 
   return (
     <TransactionsContainer>
-      <h1>Nova {tipo}</h1>
+      <h1>Nova {(tipo === "entrada") ? "entrada" : "saida"}</h1>
       <form onSubmit={handleSubmit}>
         <input
          data-test="registry-amount-input"
@@ -54,7 +54,7 @@ export default function TransactionsPage() {
          value={transaction.description}
          onChange={handleTransaction}
         />
-        <button data-test="registry-save">Salvar {tipo}</button>
+        <button data-test="registry-save">Salvar {(tipo === "entrada") ? "entrada" : "saida"}</button>
       </form>
     </TransactionsContainer>
   )
