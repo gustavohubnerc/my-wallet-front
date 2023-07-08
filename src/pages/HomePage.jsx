@@ -24,7 +24,7 @@ export default function HomePage() {
             Authorization: `Bearer ${token}`
           }
         });
-        setUserTransactions(response.data);
+        setUserTransactions(response.data.reverse());
       }
       catch (error) {
         alert(error.response.data)
