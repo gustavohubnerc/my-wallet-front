@@ -13,18 +13,22 @@ export default function HomePage() {
 
   const { name } = useContext(UserContext);
   const { token } = useContext(UserContext);
+
+  useEffect(() => {
+    if(localStorage.getItem("token") == undefined) {
+      navigate("/");
+    }
+  })
   
   useEffect(() => {
     const getTransactions = async () => {
       try {
-        if(!token) return alert('Sua sessão expirou');
-
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-        setUserTransactions(response.data.reverse());
+        setUserTransactions([response.data.reverse()]);
       }
       catch (error) {
         alert(error.response.data)
@@ -34,24 +38,20 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    let total = 0;
+    let calcBalance = 0;
     userTransactions.forEach((transaction) => {
       if (transaction.tipo === "entrada") {
-        total += transaction.value;
+        calcBalance += transaction.value;
       } else {
-        total -= transaction.value;
+        calcBalance -= transaction.value;
       }
     });
-    setBalance(total);
+    setBalance(calcBalance);
   }, [userTransactions]);
 
   const handleLogout = () => {
     localStorage.removeItem("data");
     navigate("/");
-  }
-
-  const formatValue = (value) => {
-    return value.toLocaleString('pt-BR', {minimumFractionDigits: 2})
   }
 
   return (
@@ -73,7 +73,7 @@ export default function HomePage() {
                 <strong data-test="registry-name">{transaction.description}</strong>
               </div>
               <Value data-test="registry-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
-                {formatValue(transaction.value)}
+                {Number(transaction.value).toFixed(2).toString().replace('.',',')}
               </Value>
             </ListItemContainer>  
           ))}  
@@ -83,7 +83,7 @@ export default function HomePage() {
         <article>
           <strong>Saldo</strong>
           <Value data-test="total-amount" color={balance >= 0 ? "positivo" : "negativo"}>
-            {formatValue(balance)}
+            {balance.toFixed(2).toString().replace('.',',')}
           </Value>
         </article>
       </TransactionsContainer>
