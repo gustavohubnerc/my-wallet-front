@@ -50,6 +50,10 @@ export default function HomePage() {
     navigate("/");
   }
 
+  const formatValue = (value) => {
+    return value.toLocaleString('pt-BR', {minimumFractionDigits: 2})
+  }
+
   return (
     <HomeContainer>
       <Header>
@@ -69,7 +73,7 @@ export default function HomePage() {
                 <strong data-test="registry-name">{transaction.description}</strong>
               </div>
               <Value data-test="registry-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
-                {transaction.value}
+                {formatValue(transaction.value)}
               </Value>
             </ListItemContainer>  
           ))}  
@@ -79,7 +83,7 @@ export default function HomePage() {
         <article>
           <strong>Saldo</strong>
           <Value data-test="total-amount" color={balance >= 0 ? "positivo" : "negativo"}>
-            {balance}
+            {formatValue(balance)}
           </Value>
         </article>
       </TransactionsContainer>
