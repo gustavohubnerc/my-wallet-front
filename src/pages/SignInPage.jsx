@@ -38,7 +38,6 @@ export default function SignInPage() {
           localStorage.setItem("data", JSON.stringify(data));
           setToken(response.data.token);
           setName(response.data.name);
-          console.log(response);
           navigate("/home");
         } else if (response.status === 404) {
           alert("E-mail não encontrado. Cadastre-se primeiro.");

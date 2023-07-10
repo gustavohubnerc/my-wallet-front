@@ -12,30 +12,30 @@ export default function HomePage() {
   const [balance, setBalance] = useState(0);
 
   const { name } = useContext(UserContext);
-  const { token } = useContext(UserContext);
-
-  useEffect(() => {
-    if(localStorage.getItem("token") == undefined) {
-      navigate("/");
-    }
-  })
   
   useEffect(() => {
     const getTransactions = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setUserTransactions([response.data.reverse()]);
-      }
-      catch (error) {
-        alert(error.response.data)
+      const data = localStorage.getItem("data");
+      if (!data) {
+        navigate("/");
+      } else {
+        const { token } = JSON.parse(userData);
+
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setUserTransactions([response.data.reverse()]);
+        }
+        catch (error) {
+          alert(error.response.data)
+        }
       }
     }
     getTransactions();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     let calcBalance = 0;
