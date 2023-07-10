@@ -19,7 +19,7 @@ export default function HomePage() {
       if (!data) {
         navigate("/");
       } else {
-        const { token } = JSON.parse(userData);
+        const { token } = JSON.parse(data);
 
         try {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/home`, {
