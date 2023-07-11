@@ -48,7 +48,8 @@ export default function SignInPage() {
         }
       })
       .catch((error) => {
-        alert("Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde.");
+        console.log(error)
+        alert("Ocorreu um erro ao tentar fazer login.");
       });
   };
 

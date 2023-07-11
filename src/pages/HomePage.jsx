@@ -28,6 +28,7 @@ export default function HomePage() {
             }
           });
           setUserTransactions(response.data.reverse());
+          console.log(userTransactions)
         }
         catch (error) {
           alert(error.response.data)
@@ -68,7 +69,7 @@ export default function HomePage() {
         ) : (
           <ul>
           {userTransactions.map((transaction) => (
-            <ListItemContainer key={transaction.id}>
+            <ListItemContainer key={transaction._id}>
               <div>
                 <span>{transaction.date}</span>
                 <strong data-test="registry-name">{transaction.description}</strong>
