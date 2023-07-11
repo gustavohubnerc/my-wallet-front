@@ -27,7 +27,7 @@ export default function HomePage() {
               Authorization: `Bearer ${token}`
             }
           });
-          setUserTransactions([response.data.reverse()]);
+          setUserTransactions(response.data.reverse());
         }
         catch (error) {
           alert(error.response.data)
@@ -40,10 +40,11 @@ export default function HomePage() {
   useEffect(() => {
     let calcBalance = 0;
     userTransactions.forEach((transaction) => {
+      const transactionValue = parseFloat(transaction.value); 
       if (transaction.tipo === "entrada") {
-        calcBalance += transaction.value;
+        calcBalance += transactionValue;
       } else {
-        calcBalance -= transaction.value;
+        calcBalance -= transactionValue;
       }
     });
     setBalance(calcBalance);
@@ -73,7 +74,7 @@ export default function HomePage() {
                 <strong data-test="registry-name">{transaction.description}</strong>
               </div>
               <Value data-test="registry-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
-                {Number(transaction.value).toFixed(2).toString().replace('.',',')}
+                {Number(transaction.value).toFixed(2).replace('.',',')}
               </Value>
             </ListItemContainer>  
           ))}  
@@ -83,7 +84,7 @@ export default function HomePage() {
         <article>
           <strong>Saldo</strong>
           <Value data-test="total-amount" color={balance >= 0 ? "positivo" : "negativo"}>
-            {balance.toFixed(2).toString().replace('.',',')}
+            {Number(balance).toFixed(2).replace('.',',')}
           </Value>
         </article>
       </TransactionsContainer>
