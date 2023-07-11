@@ -56,33 +56,31 @@ export default function HomePage() {
     navigate("/");
   }
 
-  const handleDelete = (id) => {
-    const user = localStorage.getItem("data");
-    if (!user) {
-      navigate("/");
-    } else {
-      const { token } = JSON.parse(user);
-
-      const confirmation = window.confirm("Tem certeza que deseja excluir esse registro?");
-
-      if (confirmation) {
-        axios.delete(`${import.meta.env.VITE_API_URL}/home/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        try {
-          const refreshTransactions = userTransactions.filter((transaction) => {
-            transaction._id !== id
+    const handleDelete = (id) => {
+      const user = localStorage.getItem("data");
+      if (!user) {
+        navigate("/");
+      } else {
+        const { token } = JSON.parse(user);
+  
+        const confirmation = window.confirm("Tem certeza que deseja excluir esse registro?");
+  
+        if (confirmation) {
+          axios.delete(`${import.meta.env.VITE_API_URL}/home/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           })
-          setUserTransactions(refreshTransactions);
-        } catch (error) {
-          alert(error.response.data)
+          .then(() => {
+            const refreshTransactions = userTransactions.filter((transaction) => transaction._id !== id)
+            setUserTransactions(refreshTransactions);
+          })
+          .catch((error) => {
+            console.log(error)
+          })
         }
       }
     }
-
-  }
 
   return (
     <HomeContainer>
