@@ -56,6 +56,34 @@ export default function HomePage() {
     navigate("/");
   }
 
+  const handleDelete = (id) => {
+    const user = localStorage.getItem("data");
+    if (!user) {
+      navigate("/");
+    } else {
+      const { token } = JSON.parse(user);
+
+      const confirmation = window.confirm("Tem certeza que deseja excluir esse registro?");
+
+      if (confirmation) {
+        axios.delete(`${import.meta.env.VITE_API_URL}/home/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        try {
+          const refreshTransactions = userTransactions.filter((transaction) => {
+            transaction._id !== id
+          })
+          setUserTransactions(refreshTransactions);
+        } catch (error) {
+          alert(error.response.data)
+        }
+      }
+    }
+
+  }
+
   return (
     <HomeContainer>
       <Header>
@@ -77,7 +105,11 @@ export default function HomePage() {
               <Value data-test="registry-amount" color={transaction.tipo === "entrada" ? "positivo" : "negativo"}>
                 {Number(transaction.value).toFixed(2).replace('.',',')}
               </Value>
+              <DeleteButton data-test="registry-delete" onClick={() => handleDelete(transaction._id)}>
+                X
+              </DeleteButton>
             </ListItemContainer>  
+            
           ))}  
         </ul>
         )} 
@@ -172,4 +204,13 @@ const ListItemContainer = styled.li`
     color: #c6c6c6;
     margin-right: 10px;
   }
+`
+
+const DeleteButton = styled.button`
+  color: #C6C6C6;
+  font-size: 10px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
