@@ -12,6 +12,6 @@ Back-end: https://github.com/gustavohubnerc/my-wallet-back
 
 ## How to run in development
  - Clone this repository
- - Create .env file to connect with the server
+ - Create .env file with the deploy of this application back-end (https://mywallet-api-vivi.onrender.com) as VITE_API_URL
  - npm i
  - npm run dev
